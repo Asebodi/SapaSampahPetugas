@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,6 +29,7 @@ public class InputActivity extends AppCompatActivity {
     TextView userAddr, inputWeight, inputBalance;
     Button inputBtn;
     String uid, balance, weight;
+    ProgressBar inputProgressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +50,7 @@ public class InputActivity extends AppCompatActivity {
         inputBalance = findViewById(R.id.inputBalance);
         inputBtn = findViewById(R.id.inputBtn);
         weight = inputWeight.getText().toString();
+        inputProgressBar = findViewById(R.id.inputProgressBar);
 
         mColRef.document(uid).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
@@ -68,6 +71,7 @@ public class InputActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (!weight.isEmpty()) {
+                    inputProgressBar.setVisibility(View.VISIBLE);
                     int weight = Integer.parseInt(inputWeight.getText().toString());
                     int intBalance = Integer.parseInt(balance);
 
@@ -80,12 +84,14 @@ public class InputActivity extends AppCompatActivity {
                     mColRef.document(uid).update(balanceUpdate).addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void aVoid) {
+                            inputProgressBar.setVisibility(View.GONE);
                             Toast.makeText(InputActivity.this, "Input sampah berhasil!", Toast.LENGTH_SHORT).show();
                             finish();
                         }
                     }).addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
+                            inputProgressBar.setVisibility(View.GONE);
                             Toast.makeText(InputActivity.this, "Terjadi sebuah masalah", Toast.LENGTH_SHORT).show();
                         }
                     });
