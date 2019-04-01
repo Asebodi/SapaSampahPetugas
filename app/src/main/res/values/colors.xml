@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#E97658</color>
+    <color name="colorPrimaryDark">#E97658</color>
+    <color name="colorAccent">#D81B60</color>
+    <color name="colorStartGd">#E97658</color>
+    <color name="colorEndGd">#DE5B6D</color>
+    <color name="colorBg">#EBEBEB</color>
+
+    <color name="white">#ffffff</color>
+    <color name="qrWhite">#EBEBEB</color>
+    <color name="qrBlack">#000000</color>
+    <color name="green">#006633</color>
+    <color name="transaction">#336666</color>
+    <color name="text">#543939</color>
+
+    <color name="dotIndocator">#C7563A</color>
+    <color name="themeFade">#EB917B</color>
+    <color name="nextImagebutton">#006633</color>
+
+
+</resources>

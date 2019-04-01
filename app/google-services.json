@@ -1,0 +1,107 @@
+{
+  "project_info": {
+    "project_number": "972323320800",
+    "firebase_url": "https://sapasampah.firebaseio.com",
+    "project_id": "sapasampah",
+    "storage_bucket": "sapasampah.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:972323320800:android:e29de8b48400828a",
+        "android_client_info": {
+          "package_name": "id.sapasampah"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "972323320800-6af6aflgrsm375lv14kaitcooit8eloe.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "id.sapasampah",
+            "certificate_hash": "8110d141d768d70c858840cb2559d0db0e313429"
+          }
+        },
+        {
+          "client_id": "972323320800-mbrhgsvkv816e00u0tpnpklec5414mip.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "id.sapasampah",
+            "certificate_hash": "e3fe9fab7cd373d435e5df537f51a73d63d1e358"
+          }
+        },
+        {
+          "client_id": "972323320800-02u8e50u3ueqp2gj8ealbq57cfkjvs9m.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDMD2VSReLFpJ1nQkjb1PT65wOAPMXFrBE"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "972323320800-02u8e50u3ueqp2gj8ealbq57cfkjvs9m.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:972323320800:android:5a3243eafaa4485b",
+        "android_client_info": {
+          "package_name": "id.sapasampah.petugas"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "972323320800-siv30h8p8tc69featckrj9shnmb3om8s.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "id.sapasampah.petugas",
+            "certificate_hash": "e3fe9fab7cd373d435e5df537f51a73d63d1e358"
+          }
+        },
+        {
+          "client_id": "972323320800-02u8e50u3ueqp2gj8ealbq57cfkjvs9m.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDMD2VSReLFpJ1nQkjb1PT65wOAPMXFrBE"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "972323320800-02u8e50u3ueqp2gj8ealbq57cfkjvs9m.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
