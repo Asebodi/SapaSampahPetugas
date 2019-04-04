@@ -75,6 +75,8 @@ public class InputActivity extends AppCompatActivity {
                     int weight = Integer.parseInt(inputWeight.getText().toString());
                     int intBalance = Integer.parseInt(balance);
 
+                    //TODO: I think there's something wrong here, might have to put this outside the if statement. Too tired now
+
                     int input = weight+intBalance;
                     String inputStr = Integer.toString(input);
 
