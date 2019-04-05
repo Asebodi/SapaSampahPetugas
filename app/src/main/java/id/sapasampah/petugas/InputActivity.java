@@ -5,9 +5,11 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -27,7 +29,8 @@ public class InputActivity extends AppCompatActivity {
 
     CollectionReference mColRef = FirebaseFirestore.getInstance().collection("users");
     Toolbar inputToolbar;
-    TextView userAddr, inputWeight, inputBalance;
+    TextView userAddr, inputBalance;
+    EditText inputWeight;
     Button inputBtn;
     String uid, balance, weight;
     ProgressBar inputProgressBar;
@@ -50,7 +53,6 @@ public class InputActivity extends AppCompatActivity {
         inputWeight = findViewById(R.id.inputWeight);
         inputBalance = findViewById(R.id.inputBalance);
         inputBtn = findViewById(R.id.inputBtn);
-        weight = inputWeight.getText().toString();
         inputProgressBar = findViewById(R.id.inputProgressBar);
 
         mColRef.document(uid).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
@@ -71,34 +73,38 @@ public class InputActivity extends AppCompatActivity {
         inputBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!weight.isEmpty()) {
-                    inputProgressBar.setVisibility(View.VISIBLE);
-                    int weight = Integer.parseInt(inputWeight.getText().toString());
-                    int intBalance = Integer.parseInt(balance);
-
-                    //TODO: I think there's something wrong here, might have to put this outside the if statement. Too tired now
-
-                    int input = weight+intBalance;
-                    String inputStr = Integer.toString(input);
-
-                    Map<String, Object> balanceUpdate = new HashMap<>();
-                    balanceUpdate.put("balance",inputStr);
-
-                    mColRef.document(uid).update(balanceUpdate).addOnSuccessListener(new OnSuccessListener<Void>() {
-                        @Override
-                        public void onSuccess(Void aVoid) {
-                            inputProgressBar.setVisibility(View.GONE);
-                            Toast.makeText(InputActivity.this, "Input sampah berhasil!", Toast.LENGTH_SHORT).show();
-                            finish();
-                        }
-                    }).addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            inputProgressBar.setVisibility(View.GONE);
-                            Toast.makeText(InputActivity.this, "Terjadi sebuah masalah", Toast.LENGTH_SHORT).show();
-                        }
-                    });
+                Log.d("InputActivity", "onClick: Clicked");
+                weight = inputWeight.getText().toString();
+                if (weight.isEmpty()) {
+                    inputWeight.setError("Berat belum terisi!");
+                    inputWeight.requestFocus();
+                    return;
                 }
+
+                inputProgressBar.setVisibility(View.VISIBLE);
+                int weight = Integer.parseInt(inputWeight.getText().toString());
+                int intBalance = Integer.parseInt(balance);
+
+                int input = weight+intBalance;
+                String inputStr = Integer.toString(input);
+
+                Map<String, Object> balanceUpdate = new HashMap<>();
+                balanceUpdate.put("balance",inputStr);
+
+                mColRef.document(uid).update(balanceUpdate).addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        inputProgressBar.setVisibility(View.GONE);
+                        Toast.makeText(InputActivity.this, "Input sampah berhasil!", Toast.LENGTH_SHORT).show();
+                        finish();
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        inputProgressBar.setVisibility(View.GONE);
+                        Toast.makeText(InputActivity.this, "Terjadi sebuah masalah", Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
         });
     }
