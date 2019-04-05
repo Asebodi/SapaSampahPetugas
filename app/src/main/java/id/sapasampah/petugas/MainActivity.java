@@ -22,6 +22,7 @@ public class MainActivity extends AppCompatActivity {
     private QrFragment qrFragment;
     private ProfileFragment profileFragment;
     private FirebaseAuth mAuth;
+    private FirebaseAuth.AuthStateListener mAuthStateListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +30,19 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         mAuth = FirebaseAuth.getInstance();
+        final FirebaseUser user = mAuth.getCurrentUser();
+
+        mAuthStateListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                if (user == null) {
+                    Intent goLogin = new Intent(MainActivity.this, LoginActivity.class);
+                    startActivity(goLogin);
+                    finish();
+                }
+            }
+        }
+
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
         homeFrameLayout = findViewById(R.id.homeFrameLayout);
 
@@ -72,13 +86,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onStart() {
         super.onStart();
-
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-        if (currentUser==null) {
-            Intent goLogin = new Intent(MainActivity.this, LoginActivity.class);
-            startActivity(goLogin);
-            finish();
-        }
+        mAuth.addAuthStateListener(mAuthStateListener);
     }
 }
 
