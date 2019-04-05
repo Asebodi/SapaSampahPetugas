@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
                     finish();
                 }
             }
-        }
+        };
 
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
         homeFrameLayout = findViewById(R.id.homeFrameLayout);
