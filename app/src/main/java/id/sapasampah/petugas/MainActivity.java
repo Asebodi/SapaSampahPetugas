@@ -50,23 +50,22 @@ public class MainActivity extends AppCompatActivity {
         qrFragment = new QrFragment();
         profileFragment = new ProfileFragment();
 
+        setFragment(addressFragment);
+
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
 
                 switch (menuItem.getItemId()) {
                     case R.id.menuAddr:
-                        bottomNavigationView.setItemBackgroundResource(R.color.colorAccent);
                         setFragment(addressFragment);
                         return true;
 
                     case R.id.menuQr:
-                        bottomNavigationView.setItemBackgroundResource(R.color.colorAccent);
                         setFragment(qrFragment);
                         return true;
 
                     case R.id.menuProfile:
-                        bottomNavigationView.setItemBackgroundResource(R.color.colorAccent);
                         setFragment(profileFragment);
                         return true;
 
