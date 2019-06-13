@@ -37,8 +37,8 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:layout_marginTop="24dp"
-        android:textSize="16sp"
-        android:text="Adit Raharditya"
+        android:text="Username"
+        android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/inputToolbar" />
 
@@ -47,9 +47,9 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="24dp"
-        android:text=" "
+        android:text="Address"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/userName" />
@@ -59,13 +59,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="8dp"
         android:text="Berat Sampah (Gram)"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/userAddr" />
+        app:layout_constraintTop_toBottomOf="@+id/radioGroupInput" />
 
     <EditText
         android:id="@+id/inputWeight"
@@ -85,10 +85,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="8dp"
-        android:textSize="18sp"
         android:text="Jumlah Saldo"
+        android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/inputWeight" />
@@ -105,17 +105,28 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView4" />
 
-    <Button
-        android:id="@+id/inputBtn"
-        android:layout_width="wrap_content"
+    <com.ebanx.swipebtn.SwipeButton
+        android:id="@+id/inputSwipeButton"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="24dp"
         android:layout_marginTop="24dp"
-        android:layout_marginEnd="8dp"
-        android:text="konfirmasi"
+        android:layout_marginEnd="24dp"
+        app:button_background="@drawable/bg_rounded"
+        app:button_bottom_padding="10dp"
+        app:button_image_disabled="@drawable/next"
+        app:button_image_enabled="@drawable/next"
+        app:button_left_padding="10dp"
+        app:button_right_padding="10dp"
+        app:button_top_padding="10dp"
+        app:inner_text="Geser untuk konfirmasi"
+        app:inner_text_background="@drawable/btn_rounded"
+        app:inner_text_bottom_padding="10dp"
+        app:inner_text_color="@color/white"
+        app:inner_text_top_padding="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/inputBalance" />
+        app:layout_constraintTop_toBottomOf="@id/inputBalance" />
 
     <ProgressBar
         android:id="@+id/inputProgressBar"
@@ -128,6 +139,35 @@
         android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/inputBtn" />
+        app:layout_constraintTop_toBottomOf="@id/inputSwipeButton" />
+
+    <RadioGroup
+        android:id="@+id/radioGroupInput"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="8dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/userAddr">
+
+        <RadioButton
+            android:id="@+id/radioButtonCat"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="20dp"
+            android:layout_weight="1"
+            android:checked="true"
+            android:text="Categorized" />
+
+        <RadioButton
+            android:id="@+id/radioButtonNon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Not Categorized" />
+    </RadioGroup>
 
 </android.support.constraint.ConstraintLayout>

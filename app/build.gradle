@@ -7,8 +7,9 @@ android {
     compileSdkVersion 28
     defaultConfig {
         applicationId "id.sapasampah.petugas"
-        minSdkVersion 19
+        minSdkVersion 21
         targetSdkVersion 28
+        multiDexEnabled true
         versionCode 2
         versionName "1.0.3"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -29,7 +30,9 @@ dependencies {
     implementation 'com.google.firebase:firebase-core:16.0.8'
     implementation 'com.google.firebase:firebase-auth:16.2.0'
     implementation 'com.google.firebase:firebase-firestore:18.1.0'
+    implementation 'com.firebaseui:firebase-ui-firestore:4.1.0'
     implementation 'me.dm7.barcodescanner:zxing:1.9'
+    implementation 'com.ebanx:swipe-button:0.4.0'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'

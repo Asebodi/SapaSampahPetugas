@@ -1,5 +1,7 @@
 package id.sapasampah.petugas;
 
+import android.content.Intent;
+import android.graphics.Typeface;
 import android.service.autofill.TextValueSanitizer;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -13,9 +15,13 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.ebanx.swipebtn.OnStateChangeListener;
+import com.ebanx.swipebtn.SwipeButton;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -37,11 +43,13 @@ public class InputActivity extends AppCompatActivity {
 
     CollectionReference mColRef = FirebaseFirestore.getInstance().collection("users");
     Toolbar inputToolbar;
-    TextView userAddr, inputBalance;
+    TextView userName, userAddr, inputBalance;
     EditText inputWeight;
-    Button inputBtn;
+    SwipeButton inputSwipeButton;
     String uid, balance, weight;
     ProgressBar inputProgressBar;
+    RadioGroup radioGroupInput;
+    RadioButton radioButtonCat, radioButtonNon;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,25 +66,33 @@ public class InputActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         userAddr = findViewById(R.id.userAddr);
+        userName = findViewById(R.id.userName);
         inputWeight = findViewById(R.id.inputWeight);
         inputBalance = findViewById(R.id.inputBalance);
-        inputBtn = findViewById(R.id.inputBtn);
         inputProgressBar = findViewById(R.id.inputProgressBar);
+        inputSwipeButton = findViewById(R.id.inputSwipeButton);
 
         mColRef.document(uid).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 if (documentSnapshot.exists()) {
+                    String username = documentSnapshot.getString("username");
                     String province = documentSnapshot.getString("province");
                     String city = documentSnapshot.getString("city");
                     String district = documentSnapshot.getString("district");
                     String postal = documentSnapshot.getString("postal");
                     String fullAddr = documentSnapshot.getString("fullAddr");
                     balance = documentSnapshot.getString("balance");
+                    userName.setText(username);
                     userAddr.setText(fullAddr + ", " + district + ", " + city + ", " + province + ", " + postal);
                 }
             }
         });
+
+        radioGroupInput = findViewById(R.id.radioGroupInput);
+        radioButtonCat = findViewById(R.id.radioButtonCat);
+        radioButtonNon = findViewById(R.id.radioButtonNon);
+
 
         inputWeight.addTextChangedListener(new TextWatcher() {
             @Override
@@ -89,11 +105,22 @@ public class InputActivity extends AppCompatActivity {
                 String weightET = inputWeight.getText().toString();
 
                 if (!weightET.isEmpty()) {
-                    Integer balance = Integer.parseInt(inputWeight.getText().toString());
-                    String balanceFormat = String.format("%,d", balance);
-                    String balanceDisp = "Rp " + balanceFormat;
-                    inputBalance.setText(balanceDisp);
-                } else {
+                    if (radioButtonCat.isChecked()) {
+
+                        Integer balance = Integer.parseInt(inputWeight.getText().toString());
+                        String balanceFormat = String.format("%,d", balance);
+                        String balanceDisp = "Rp " + balanceFormat;
+                        inputBalance.setText(balanceDisp);
+                    }
+                    if (radioButtonNon.isChecked()) {
+                        Integer balance = Integer.parseInt(inputWeight.getText().toString());
+                        Integer balanceVar = balance/2;
+                        String balanceFormat = String.format("%,d", balanceVar);
+                        String balanceDisp = "Rp " + balanceFormat;
+                        inputBalance.setText(balanceDisp);
+                    }
+                }
+                else {
                     inputBalance.setText("");
                 }
             }
@@ -104,9 +131,10 @@ public class InputActivity extends AppCompatActivity {
             }
         });
 
-        inputBtn.setOnClickListener(new View.OnClickListener() {
+
+        inputSwipeButton.setOnStateChangeListener(new OnStateChangeListener() {
             @Override
-            public void onClick(View v) {
+            public void onStateChange(boolean active) {
                 Log.d("InputActivity", "onClick: Clicked");
                 weight = inputWeight.getText().toString();
                 if (weight.isEmpty()) {
@@ -117,10 +145,11 @@ public class InputActivity extends AppCompatActivity {
 
                 inputProgressBar.setVisibility(View.VISIBLE);
                 int weight = Integer.parseInt(inputWeight.getText().toString());
-                double weightInKg = weight/1000;
-                String weightKgStr = String.format("%.2f", weightInKg);
+                double divider = 1000;
+                double weightInKg = Double.valueOf(weight)/divider;
+                String weightKgStr = String.format("%.2f", weightInKg) + " Kg";
 
-                String amount = "Rp " + String.format("%,d", weight);
+                String amount = "Rp " + String.format(Locale.US, "%,d", weight).replace(",", ".");
 
                 int intBalance = Integer.parseInt(balance);
 
@@ -138,6 +167,7 @@ public class InputActivity extends AppCompatActivity {
                 String currentDate = date.format(calendar.getTime());
                 String currentTime = time.format(calendar.getTime());
 
+                //Data Input
                 Map<String, Object> balanceUpdate = new HashMap<>();
                 balanceUpdate.put("balance",inputStr);
 
@@ -149,6 +179,38 @@ public class InputActivity extends AppCompatActivity {
                 pickupAdd.put("total", String.format("%,d", input));
                 pickupAdd.put("epoch", currentMillis);
 
+                //Move the address to Finished
+                final DocumentReference mActive = FirebaseFirestore.getInstance().collection("active").document(uid);
+                final DocumentReference mFinished = FirebaseFirestore.getInstance().collection("finished").document(uid);
+
+                mActive.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot document = task.getResult();
+                            if (document != null) {
+                                mFinished.set(document.getData()).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void aVoid) {
+                                        Log.d("InputActivity", "onSuccess: Sucessfullly moved the address to Finished");
+                                        mActive.delete();
+                                    }
+                                }).addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        Log.d("InputActivity", "onFailure: Unsucessful document move");
+                                    }
+                                });
+                            } else {
+                                Log.d("InputActivity", "onComplete: Document not found");
+                            }
+                        } else {
+                            Log.d("InputActivity", "onComplete: Error writing document");
+                        }
+                    }
+                });
+
+                //Update user's balance
                 mColRef.document(uid).update(balanceUpdate).addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
@@ -173,6 +235,60 @@ public class InputActivity extends AppCompatActivity {
             }
         });
     }
+    /*
+
+    public void onRadioButtonClicked(View v){
+        radioGroupInput = findViewById(R.id.radioGroupInput);
+        radioButtonCat = findViewById(R.id.radioButtonCat);
+        radioButtonNon = findViewById(R.id.radioButtonNon);
+
+        boolean checked = ((RadioButton) v).isChecked();
+
+        switch (v.getId()) {
+            case R.id.radioButtonCat:
+                if (checked) {
+                    radioButtonCat.setTypeface(null, Typeface.BOLD);
+                    radioButtonNon.setTypeface(null, Typeface.NORMAL);
+
+
+                }
+                break;
+
+            case R.id.radioButtonNon:
+                if (checked) {
+                    radioButtonCat.setTypeface(null, Typeface.NORMAL);
+                    radioButtonNon.setTypeface(null, Typeface.BOLD);
+
+                    inputWeight.addTextChangedListener(new TextWatcher() {
+                        @Override
+                        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                        }
+
+                        @Override
+                        public void onTextChanged(CharSequence s, int start, int before, int count) {
+                            String weightET = inputWeight.getText().toString();
+
+                            if (!weightET.isEmpty()) {
+                                Integer balance = Integer.parseInt(inputWeight.getText().toString());
+                                Integer balanceDiv = balance/2;
+                                String balanceFormat = String.format("%,d", balanceDiv);
+                                String balanceDisp = "Rp " + balanceFormat;
+                                inputBalance.setText(balanceDisp);
+                            } else {
+                                inputBalance.setText("");
+                            }
+                        }
+
+                        @Override
+                        public void afterTextChanged(Editable s) {
+
+                        }
+                    });
+                }
+        }
+    }
+    */
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
