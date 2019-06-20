@@ -93,6 +93,37 @@ public class InputActivity extends AppCompatActivity {
         radioButtonCat = findViewById(R.id.radioButtonCat);
         radioButtonNon = findViewById(R.id.radioButtonNon);
 
+        radioButtonCat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!inputWeight.getText().toString().isEmpty()) {
+                    Integer balance = Integer.parseInt(inputWeight.getText().toString());
+                    String balanceFormat = String.format("%,d", balance);
+                    String balanceDisp = "Rp " + balanceFormat;
+                    inputBalance.setText(balanceDisp);
+                } else {
+                    inputBalance.setText("");
+                }
+
+            }
+        });
+
+        radioButtonNon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!inputWeight.getText().toString().isEmpty()) {
+                    Integer balance = Integer.parseInt(inputWeight.getText().toString());
+                    Integer balanceVar = balance / 2;
+                    String balanceFormat = String.format("%,d", balanceVar);
+                    String balanceDisp = "Rp " + balanceFormat;
+                    inputBalance.setText(balanceDisp);
+                } else {
+                    inputBalance.setText("");
+                }
+
+            }
+        });
+
 
         inputWeight.addTextChangedListener(new TextWatcher() {
             @Override
@@ -149,7 +180,13 @@ public class InputActivity extends AppCompatActivity {
                 double weightInKg = Double.valueOf(weight)/divider;
                 String weightKgStr = String.format("%.2f", weightInKg) + " Kg";
 
-                String amount = "Rp " + String.format(Locale.US, "%,d", weight).replace(",", ".");
+                String amount;
+                if (radioButtonCat.isChecked()) {
+                    amount = "Rp " + String.format(Locale.US, "%,d", weight).replace(",", ".");
+                } else {
+                    int divided = weight/2;
+                    amount = "Rp " + String.format(Locale.US, "%,d", divided).replace(",", ".");
+                }
 
                 int intBalance = Integer.parseInt(balance);
 
@@ -188,7 +225,7 @@ public class InputActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                         if (task.isSuccessful()) {
                             DocumentSnapshot document = task.getResult();
-                            if (document != null) {
+                            if (document.getData() != null) {
                                 mFinished.set(document.getData()).addOnSuccessListener(new OnSuccessListener<Void>() {
                                     @Override
                                     public void onSuccess(Void aVoid) {
@@ -235,60 +272,6 @@ public class InputActivity extends AppCompatActivity {
             }
         });
     }
-    /*
-
-    public void onRadioButtonClicked(View v){
-        radioGroupInput = findViewById(R.id.radioGroupInput);
-        radioButtonCat = findViewById(R.id.radioButtonCat);
-        radioButtonNon = findViewById(R.id.radioButtonNon);
-
-        boolean checked = ((RadioButton) v).isChecked();
-
-        switch (v.getId()) {
-            case R.id.radioButtonCat:
-                if (checked) {
-                    radioButtonCat.setTypeface(null, Typeface.BOLD);
-                    radioButtonNon.setTypeface(null, Typeface.NORMAL);
-
-
-                }
-                break;
-
-            case R.id.radioButtonNon:
-                if (checked) {
-                    radioButtonCat.setTypeface(null, Typeface.NORMAL);
-                    radioButtonNon.setTypeface(null, Typeface.BOLD);
-
-                    inputWeight.addTextChangedListener(new TextWatcher() {
-                        @Override
-                        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-                        }
-
-                        @Override
-                        public void onTextChanged(CharSequence s, int start, int before, int count) {
-                            String weightET = inputWeight.getText().toString();
-
-                            if (!weightET.isEmpty()) {
-                                Integer balance = Integer.parseInt(inputWeight.getText().toString());
-                                Integer balanceDiv = balance/2;
-                                String balanceFormat = String.format("%,d", balanceDiv);
-                                String balanceDisp = "Rp " + balanceFormat;
-                                inputBalance.setText(balanceDisp);
-                            } else {
-                                inputBalance.setText("");
-                            }
-                        }
-
-                        @Override
-                        public void afterTextChanged(Editable s) {
-
-                        }
-                    });
-                }
-        }
-    }
-    */
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

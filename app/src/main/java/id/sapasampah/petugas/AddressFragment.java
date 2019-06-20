@@ -86,6 +86,7 @@ public class AddressFragment extends Fragment {
             recyclerViewActive.setHasFixedSize(true);
             recyclerViewActive.setLayoutManager(new LinearLayoutManager(getContext()));
             recyclerViewActive.setAdapter(adapterActive);
+            recyclerViewActive.setNestedScrollingEnabled(false);
 
         } else {
             Intent goLogin = new Intent(getContext(), LoginActivity.class);

@@ -5,13 +5,13 @@
     <item
         android:id="@+id/menuAddr"
         android:icon="@drawable/baseline_home_black_24dp"
-        android:title="Alamat" />
+        android:title="Address List" />
     <item
         android:id="@+id/menuQr"
         android:icon="@drawable/baseline_notifications_black_24dp"
-        android:title="Scan QR Code" />
+        android:title="QR Code Scan" />
     <item
         android:id="@+id/menuProfile"
         android:icon="@drawable/baseline_person_black_24dp"
-        android:title="Profil" />
+        android:title="Profile" />
 </menu>
